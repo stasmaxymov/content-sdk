@@ -46,6 +46,7 @@ export const Default = ({
 
   return (
     <div className={`row component column-splitter ${styles}`} id={id}>
+      <p>ColumnSplitter</p>
       {enabledColumns.map((columnNum, index) => {
         const num = Number(columnNum) as ColumnNumber;
         const columnWidth = params[`ColumnWidth${num}`] ?? '';

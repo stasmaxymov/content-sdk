@@ -52,6 +52,11 @@ export const ServerPlaceholder: React.FC<ServerPlaceholderProps> = (props) => {
       delete compPaththroughProps.pageContext;
     }
 
+    /*
+      Recursively render placeholders content and pass it to components.
+      Effectively applies withPlaceholder HOC to the whole tree of components on server.
+      Main benefit - allows to render server components inside of server components.
+    */
     if (props.recursive && componentRendering.placeholders) {
       const innerPlaceholders: Record<string, React.ReactNode> = {};
       for (const innerPlaceholderName of Object.keys(componentRendering.placeholders)) {
@@ -81,7 +86,8 @@ export const ServerPlaceholder: React.FC<ServerPlaceholderProps> = (props) => {
         modifyComponentProps={props.modifyComponentProps}
         errorComponent={props.errorComponent}
         componentLoadingMessage={props.componentLoadingMessage}
-        skipErrorBoundary={true}
+        skipErrorBoundary={false}
+        compWrapperSuspense={true}
       />
     );
   });

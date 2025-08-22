@@ -13,6 +13,7 @@ export type ErrorBoundaryProps = {
   children: ReactNode;
   pageContext: SitecoreProviderPageContext;
   isDynamic?: boolean;
+  skipSuspense?: boolean;
   errorComponent?: React.ComponentClass<ErrorComponentProps> | React.FC<ErrorComponentProps>;
   rendering?: ComponentRendering;
   componentLoadingMessage?: string;
@@ -81,7 +82,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps> {
     }
 
     // do not apply suspense on already dynamic components
-    if (this.props.isDynamic) {
+    if (this.props.isDynamic || this.props.skipSuspense) {
       return this.props.children;
     }
 

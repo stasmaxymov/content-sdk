@@ -1,5 +1,10 @@
 import React, { JSX } from 'react';
-import { ComponentRendering } from '@sitecore-content-sdk/nextjs';
+import {
+  ComponentMap,
+  ComponentRendering,
+  ServerPlaceholder,
+  SitecoreProviderPageContext,
+} from '@sitecore-content-sdk/nextjs';
 import { ComponentProps } from 'lib/component-props';
 
 /**
@@ -19,10 +24,16 @@ type RowStyles = {
 interface RowSplitterProps extends ComponentProps {
   rendering: ComponentRendering;
   params: ComponentProps['params'] & RowStyles;
-  placeholders: Record<string, React.ReactNode>;
+  componentMap: ComponentMap;
+  pageContext: SitecoreProviderPageContext;
 }
 
-export const Default = async ({ params, placeholders }: RowSplitterProps): Promise<JSX.Element> => {
+export const Default = async ({
+  params,
+  rendering,
+  componentMap,
+  pageContext,
+}: RowSplitterProps): Promise<JSX.Element> => {
   const enabledPlaceholders = params.EnabledPlaceholders?.split(',') ?? [];
   const id = params.RenderingIdentifier;
 
@@ -39,7 +50,14 @@ export const Default = async ({ params, placeholders }: RowSplitterProps): Promi
         return (
           <div key={index} className={`container-fluid ${rowStyles}`.trimEnd()}>
             <div>
-              <div className="row">{placeholders[placeholderKey]}</div>
+              <div className="row">
+                <ServerPlaceholder
+                  name={placeholderKey}
+                  rendering={rendering}
+                  componentMap={componentMap}
+                  pageContext={pageContext}
+                />
+              </div>
             </div>
           </div>
         );

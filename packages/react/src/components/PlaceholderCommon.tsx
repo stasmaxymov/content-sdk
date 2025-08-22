@@ -327,6 +327,7 @@ export const CompWrapper = ({
   isEmpty,
   isEditing,
   skipErrorBoundary,
+  compWrapperSuspense,
   componentRendering,
   paththroughProps,
   index,
@@ -338,6 +339,7 @@ export const CompWrapper = ({
   isEmpty: boolean;
   isEditing: boolean;
   skipErrorBoundary?: boolean;
+  compWrapperSuspense?: boolean;
   componentRendering: ComponentRendering;
   paththroughProps: PaththroughPlaceholderProps;
   index: number;
@@ -362,13 +364,21 @@ export const CompWrapper = ({
         key={rendered.type + '-' + key}
         errorComponent={errorComponent}
         componentLoadingMessage={componentLoadingMessage}
+        skipSuspense={compWrapperSuspense}
         isDynamic={(component as LazyComponentType).render?.preload ? true : false}
-        {...rendered.props}
       >
         {rendered}
       </ErrorBoundary>
     );
   }
+
+  // if (compWrapperSuspense) {
+  //   rendered = (
+  //     <Suspense fallback={<h4>{componentLoadingMessage || 'Loading component...'}</h4>}>
+  //       {rendered}
+  //     </Suspense>
+  //   );
+  // }
 
   // if in edit mode then emit shallow chromes for hydration in Pages
   if (isEditing) {

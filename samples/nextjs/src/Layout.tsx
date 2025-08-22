@@ -2,7 +2,6 @@
  * This Layout is needed for Starter Kit.
  */
 import React, { JSX } from 'react';
-import Head from 'next/head';
 import {
   LayoutServiceData,
   Field,

@@ -37,7 +37,7 @@ export default async function Page({ params, searchParams }: PageProps) {
   // Fetch the component data from Sitecore (Likely will be deprecated)
   const componentProps = await client.getComponentData(page.layout, {}, components);
 
-  // Create the page context
+  // // Create the page context
   const pageContext = {
     route: page.layout.sitecore.route ?? undefined,
     itemId: page.layout.sitecore.route?.itemId,
@@ -53,18 +53,16 @@ export default async function Page({ params, searchParams }: PageProps) {
   );
 }
 
-/* Force dynamic rendering of the page. Uncomment if SSR is needed
 export const dynamic = 'force-dynamic';
-*/
 
 // list of page parameters to generate static pages for. Remove if SSG is not needed
-export const generateStaticParams = async () => {
-  const paths = await client.getPagePaths(['en']);
-  return paths.map((path) => ({
-    path: path.params.path,
-    lang: path.locale,
-  }));
-};
+// export const generateStaticParams = async () => {
+//   const paths = await client.getPagePaths(['en']);
+//   return paths.map((path) => ({
+//     path: path.params.path,
+//     lang: path.locale,
+//   }));
+// };
 
 // Metadata fields for the page
 export const generateMetadata = async ({ params }: PageProps) => {

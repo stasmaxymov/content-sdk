@@ -1,6 +1,6 @@
 'use client';
 import { Placeholder } from '@sitecore-content-sdk/nextjs';
-import React, { JSX } from 'react';
+import React, { JSX, useState } from 'react';
 import { ComponentProps } from 'lib/component-props';
 
 interface ContainerProps extends ComponentProps {
@@ -17,6 +17,7 @@ const Container = ({ params, rendering }: ContainerProps): JSX.Element => {
     BackgroundImage: backgroundImage,
     DynamicPlaceholderId,
   } = params;
+  const [count, setCount] = useState(0);
   const phKey = `container-${DynamicPlaceholderId}`;
 
   // Extract the mediaurl from rendering parameters
@@ -34,6 +35,14 @@ const Container = ({ params, rendering }: ContainerProps): JSX.Element => {
 
   return (
     <div className={`component container-default ${styles}`} id={id}>
+      <p>Container</p>
+      <button
+        onClick={() => {
+          setCount(count + 1);
+        }}
+      >
+        {count}
+      </button>
       <div className="component-content" style={backgroundStyle}>
         <div className="row">
           <Placeholder name={phKey} rendering={rendering} />
