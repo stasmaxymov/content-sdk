@@ -159,6 +159,6 @@ export {
   EditingScripts,
   Form,
   ServerPlaceholder,
-  ProjectedPlaceholder,
+  SlotPlaceholder,
   BasePlaceholder,
 } from '@sitecore-content-sdk/react';

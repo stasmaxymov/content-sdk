@@ -127,6 +127,6 @@ export const ServerPlaceholder: React.FC<ServerPlaceholderProps> = (props) => {
 };
 
 // Version of Server placeholder that recursivly renders placeholder content as render props  for the full tree
-export const ProjectedPlaceholder: React.FC<ServerPlaceholderProps> = (props) => {
+export const SlotPlaceholder: React.FC<ServerPlaceholderProps> = (props) => {
   return <ServerPlaceholder {...props} recursive={true} />;
 };
