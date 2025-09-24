@@ -44,9 +44,39 @@ const nextjsMapTemplate = (
 
   const componentMapEntries: string[] = [];
 
+  // Import all components as wildcard modules
   components.forEach((component) => {
     wildcardImports.push(`import * as ${component.moduleName} from '${component.importPath}';`);
-    componentMapEntries.push(`['${component.moduleName}', ${component.moduleName}]`);
+  });
+
+  // Group components by folder (via importPath dirname) and base name (before any dot-suffix)
+  const groupedByBaseName = components.reduce((acc, component) => {
+    const baseRaw = component.componentName.split('.')[0];
+    const baseKey = baseRaw.replace(/[^\w]+/g, '');
+    const dir = component.importPath.slice(0, component.importPath.lastIndexOf('/'));
+    const groupKey = `${dir}|${baseKey}`;
+    if (!acc[groupKey])
+      acc[groupKey] = [] as { moduleName: string; isBase: boolean; baseKey: string }[];
+    acc[groupKey].push({
+      moduleName: component.moduleName,
+      isBase: component.componentName === baseRaw,
+      baseKey,
+    });
+    return acc;
+  }, {} as Record<string, { moduleName: string; isBase: boolean; baseKey: string }[]>);
+
+  // Build entries merging variants under the same base key
+  Object.values(groupedByBaseName).forEach((modules) => {
+    const mapKey = modules[0].baseKey;
+    if (modules.length === 1) {
+      componentMapEntries.push(`['${mapKey}', ${modules[0].moduleName}]`);
+      return;
+    }
+    const sorted = modules.sort((a, b) =>
+      a.isBase === b.isBase ? a.moduleName.localeCompare(b.moduleName) : a.isBase ? -1 : 1
+    );
+    const spreads = sorted.map((m) => `...${m.moduleName}`).join(', ');
+    componentMapEntries.push(`['${mapKey}', { ${spreads} }]`);
   });
 
   componentImports?.forEach((packageEntry) => {

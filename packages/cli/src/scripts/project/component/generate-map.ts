@@ -1,6 +1,7 @@
 import { Argv } from 'yargs';
 import { watchItems } from '../../../utils/watch-items';
 import loadCliConfig from '../../../utils/load-config';
+import { generateMap } from '@sitecore-content-sdk/nextjs/tools';
 
 /**
  * @param {Argv} yargs
@@ -61,7 +62,8 @@ export function handler(argv: GenerateMapCliArgs) {
     );
     return;
   }
-  const componentMapGenerator = cliConfig.componentMap.generator;
+  //  directly import generate map from nextjs for poc purposes
+  const componentMapGenerator = generateMap;
   const { paths, destination, componentImports, exclude } = cliConfig.componentMap;
   if (argv.watch) {
     console.log(
